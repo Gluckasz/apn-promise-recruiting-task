@@ -1,4 +1,5 @@
 ﻿using apn_promise_recruiting_task.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace apn_promise_recruiting_task.Service
 {
@@ -13,14 +14,42 @@ namespace apn_promise_recruiting_task.Service
 
         public List<Product> GetAllProducts()
         {
-            try
+            return _context.Products.ToList();
+        }
+
+        public void AddProductToOrder(int productId, int orderId = 0)
+        {
+            var product = _context.Products.Find(productId);
+            if (product == null)
             {
-                return _context.Products.ToList();
+                throw new Exception("Can't find product with specified id");
             }
-            catch (Exception ex)
+
+            if (!_context.Orders.Any(o => o.OrderId == orderId))
             {
-                throw new Exception("Error fetching products", ex);
+                _context.Orders.Add(new Order { OrderId = orderId });
+                _context.SaveChanges();
             }
+
+            var order = _context.Orders.FirstOrDefault(o => o.OrderId == orderId);
+
+            if (order.OrderITems == null)
+            {
+                order.OrderITems = new List<OrderITem>();
+            }
+            var orderItem = new OrderITem
+            {
+                ProductId = productId,
+                Product = product,
+                OrderId = orderId,
+                Order = order
+            };
+
+            _context.OrderITems.Add(orderItem);
+
+            order.OrderITems.Add(orderItem);
+
+            _context.SaveChanges();
         }
     }
 }

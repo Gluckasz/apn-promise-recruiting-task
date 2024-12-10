@@ -15,5 +15,10 @@ namespace apn_promise_recruiting_task.Controller
         {
             return _productService.GetAllProducts();
         }
+
+        public void AddProductToOrder(int productId, int orderId = 0)
+        {
+            _productService.AddProductToOrder(productId, orderId);
+        }
     }
 }

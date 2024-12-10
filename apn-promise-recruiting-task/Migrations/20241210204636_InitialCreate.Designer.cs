@@ -10,7 +10,7 @@ using apn_promise_recruiting_task.Model;
 namespace apn_promise_recruiting_task.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241210190740_InitialCreate")]
+    [Migration("20241210204636_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -36,7 +36,7 @@ namespace apn_promise_recruiting_task.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("OrderId")
+                    b.Property<int>("OrderId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("ProductId")
@@ -112,9 +112,11 @@ namespace apn_promise_recruiting_task.Migrations
 
             modelBuilder.Entity("apn_promise_recruiting_task.Model.OrderITem", b =>
                 {
-                    b.HasOne("apn_promise_recruiting_task.Model.Order", null)
-                        .WithMany("Orders")
-                        .HasForeignKey("OrderId");
+                    b.HasOne("apn_promise_recruiting_task.Model.Order", "Order")
+                        .WithMany("OrderITems")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("apn_promise_recruiting_task.Model.Product", "Product")
                         .WithMany()
@@ -122,12 +124,14 @@ namespace apn_promise_recruiting_task.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Order");
+
                     b.Navigation("Product");
                 });
 
             modelBuilder.Entity("apn_promise_recruiting_task.Model.Order", b =>
                 {
-                    b.Navigation("Orders");
+                    b.Navigation("OrderITems");
                 });
 #pragma warning restore 612, 618
         }

@@ -47,11 +47,13 @@ namespace apn_promise_recruiting_task.Model
         public int OrderITemId { get; set; }
         public int ProductId { get; set; }
         public required Product Product { get; set; }
+        public int OrderId { get; set; }
+        public required Order Order { get; set; }
     }
 
     public class Order
     {
         public int OrderId { get; set; }
-        public required List<OrderITem> Orders { get; set; }
+        public List<OrderITem>? OrderITems { get; set; }
     }
 }

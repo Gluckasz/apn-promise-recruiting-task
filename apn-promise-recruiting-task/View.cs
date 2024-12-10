@@ -37,7 +37,21 @@ namespace apn_promise_recruiting_task.View
             switch (operation)
             {
                 case "1":
-                    // Add product
+                    Console.WriteLine("Wpisz numer produktu do dodania");
+                    string? productNumber = Console.ReadLine();
+                    Console.WriteLine("Wpisz numer zamówienia do którego chcesz dodać produkt");
+                    string? orderNumber = Console.ReadLine();
+                    if (productNumber != null && orderNumber != null)
+                    {
+                        try
+                        {
+                            _controller.AddProductToOrder(Convert.ToInt32(productNumber), Convert.ToInt32(orderNumber));
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                        }
+                    }
                     break;
 
                 case "2":

@@ -20,11 +20,12 @@ class Program
         context.Database.Migrate();
 
         var view = serviceProvider.GetService<View>();
-        view.DisplayProducts();
-        view.DisplayOperations();
         while (true)
         {
+            view.DisplayProducts();
+            view.DisplayOperations();
             view.ProcessOperations();
+            Console.Clear();
         }
     }
 }
