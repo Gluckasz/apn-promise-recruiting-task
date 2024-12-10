@@ -17,12 +17,28 @@ namespace apn_promise_recruiting_task.Service
             return _context.Products.ToList();
         }
 
-        public void AddProductToOrder(int productId, int orderId = 0)
+
+        public List<OrderITem> GetAllOrderITemsFromOrder(int orderId)
+        {
+            var order = _context.Orders.Include(o => o.OrderITems).FirstOrDefault(o => o.OrderId == orderId);
+            if (order == null)
+            {
+                throw new Exception($"Zamówienie z id: {orderId} nie istnieje");
+            }
+            return order.OrderITems;
+        }
+
+        public void AddProductToOrder(int productId, int orderId)
         {
             var product = _context.Products.Find(productId);
             if (product == null)
             {
-                throw new Exception("Can't find product with specified id");
+                throw new Exception($"Produkt z id: {productId} nie istnieje");
+            }
+
+            if (orderId <= 0)
+            {
+                throw new Exception("Id zamówienia musi być większe od 0");
             }
 
             if (!_context.Orders.Any(o => o.OrderId == orderId))
@@ -45,11 +61,27 @@ namespace apn_promise_recruiting_task.Service
                 Order = order
             };
 
-            _context.OrderITems.Add(orderItem);
-
             order.OrderITems.Add(orderItem);
 
             _context.SaveChanges();
+        }
+
+        public void RemoveItemFromOrder(int orderITemId, int orderId)
+        {
+            var orderITem = _context.OrderITems.Find(orderITemId);
+            if (orderITem == null)
+            {
+                throw new Exception($"Element zamówienia z id: {orderITem} nie istnieje");
+            }
+
+            var order = _context.Orders.Include(o => o.OrderITems).FirstOrDefault(o => o.OrderId == orderId);
+            if (order == null)
+            {
+                throw new Exception($"Zamówienie z id: {orderId} nie istnieje");
+            }
+
+            order.OrderITems.Remove(orderITem);
+            _context.OrderITems.Remove(orderITem);
         }
     }
 }

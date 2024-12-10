@@ -31,6 +31,7 @@ namespace apn_promise_recruiting_task.View
             Console.WriteLine("Wybierz jedną z tych operacji wpisując numer od 1 do 4.");
             Console.WriteLine();
         }
+
         public void ProcessOperations()
         {
             string? operation = Console.ReadLine();
@@ -50,12 +51,55 @@ namespace apn_promise_recruiting_task.View
                         catch (Exception e)
                         {
                             Console.WriteLine(e.Message);
+                            Console.WriteLine("Naciśnij dowolny przycisk aby kontynuować");
+                            Console.ReadLine();
                         }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Wpisz numer");
                     }
                     break;
 
                 case "2":
-                    // Remove product
+                    Console.WriteLine("Wpisz numer zamówienia z którego chcesz odjąć produkt");
+                    orderNumber = Console.ReadLine();
+                    Console.WriteLine("Produkty w zamówieniu:");
+                    if (orderNumber != null)
+                    {
+                        try
+                        {
+                            var orderITems = _controller.GetAllOrderITemsFromOrder(Convert.ToInt32(orderNumber));
+                            if (orderITems != null)
+                            {
+                                foreach (var orderITem in orderITems)
+                                {
+                                    Console.WriteLine($"{orderITem.OrderITemId}. {orderITem.Product.Name}: {orderITem.Product.Price} {orderITem.Product.Currency}");
+                                }
+                                Console.WriteLine("Wpisz numer produktu który chcesz usunąć");
+                                string? orderITemNumber = Console.ReadLine();
+                                if (orderITemNumber != null)
+                                {
+                                    _controller.RemoveItemFromOrder(Convert.ToInt32(orderITemNumber), Convert.ToInt32(orderNumber));
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Wpisz numer");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Zamówienie jest puste");
+                            }
+
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                        }
+                    }
+                    Console.WriteLine("Naciśnij dowolny przycisk aby kontynuować");
+                    Console.ReadLine();
                     break;
 
                 case "3":
