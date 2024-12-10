@@ -1,13 +1,12 @@
 ﻿using apn_promise_recruiting_task.Model;
-using apn_promise_recruiting_task.Service;
 
 namespace apn_promise_recruiting_task.Controller
 {
     internal class Controller
     {
-        private readonly ProductService _productService;
+        private readonly Service.Service _productService;
 
-        public Controller(ProductService productService)
+        public Controller(Service.Service productService)
         {
             _productService = productService;
         }
