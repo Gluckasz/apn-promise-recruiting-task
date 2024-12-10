@@ -3,14 +3,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using apn_promise_recruiting_task;
+using apn_promise_recruiting_task.Model;
 
 #nullable disable
 
 namespace apn_promise_recruiting_task.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241210183112_InitialCreate")]
+    [Migration("20241210184435_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -19,7 +19,7 @@ namespace apn_promise_recruiting_task.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
 
-            modelBuilder.Entity("apn_promise_recruiting_task.Order", b =>
+            modelBuilder.Entity("apn_promise_recruiting_task.Model.Order", b =>
                 {
                     b.Property<int>("OrderId")
                         .ValueGeneratedOnAdd()
@@ -35,7 +35,7 @@ namespace apn_promise_recruiting_task.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("apn_promise_recruiting_task.OrderITem", b =>
+            modelBuilder.Entity("apn_promise_recruiting_task.Model.OrderITem", b =>
                 {
                     b.Property<int>("OrderITemId")
                         .ValueGeneratedOnAdd()
@@ -51,7 +51,7 @@ namespace apn_promise_recruiting_task.Migrations
                     b.ToTable("OrderITems");
                 });
 
-            modelBuilder.Entity("apn_promise_recruiting_task.Product", b =>
+            modelBuilder.Entity("apn_promise_recruiting_task.Model.Product", b =>
                 {
                     b.Property<int>("ProductId")
                         .ValueGeneratedOnAdd()
@@ -73,16 +73,16 @@ namespace apn_promise_recruiting_task.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("apn_promise_recruiting_task.Order", b =>
+            modelBuilder.Entity("apn_promise_recruiting_task.Model.Order", b =>
                 {
-                    b.HasOne("apn_promise_recruiting_task.Order", null)
+                    b.HasOne("apn_promise_recruiting_task.Model.Order", null)
                         .WithMany("Orders")
                         .HasForeignKey("OrderId1");
                 });
 
-            modelBuilder.Entity("apn_promise_recruiting_task.OrderITem", b =>
+            modelBuilder.Entity("apn_promise_recruiting_task.Model.OrderITem", b =>
                 {
-                    b.HasOne("apn_promise_recruiting_task.Product", "Product")
+                    b.HasOne("apn_promise_recruiting_task.Model.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -91,7 +91,7 @@ namespace apn_promise_recruiting_task.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("apn_promise_recruiting_task.Order", b =>
+            modelBuilder.Entity("apn_promise_recruiting_task.Model.Order", b =>
                 {
                     b.Navigation("Orders");
                 });

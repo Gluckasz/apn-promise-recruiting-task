@@ -1,9 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace apn_promise_recruiting_task
+namespace apn_promise_recruiting_task.Model
 {
-
-
     public class ApplicationDbContext : DbContext
     {
         public DbSet<Product> Products { get; set; }

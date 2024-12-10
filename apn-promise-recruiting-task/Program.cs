@@ -1,7 +1,17 @@
-﻿using apn_promise_recruiting_task;
+﻿using apn_promise_recruiting_task.Model;
 using Microsoft.EntityFrameworkCore;
 
-using (var context = new ApplicationDbContext())
+namespace apn_promise_recruiting_task.View;
+
+internal class Program
 {
-    context.Database.Migrate();
+    static void Main(string[] args)
+    {
+        using (var context = new ApplicationDbContext())
+        {
+            context.Database.Migrate();
+        }
+        Console.WriteLine("Hello World!");
+    }
 }
+
