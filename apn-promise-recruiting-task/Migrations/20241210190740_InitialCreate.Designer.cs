@@ -10,7 +10,7 @@ using apn_promise_recruiting_task.Model;
 namespace apn_promise_recruiting_task.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241210184435_InitialCreate")]
+    [Migration("20241210190740_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -25,12 +25,7 @@ namespace apn_promise_recruiting_task.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("OrderId1")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("OrderId");
-
-                    b.HasIndex("OrderId1");
 
                     b.ToTable("Orders");
                 });
@@ -41,10 +36,15 @@ namespace apn_promise_recruiting_task.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("ProductId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("OrderITemId");
+
+                    b.HasIndex("OrderId");
 
                     b.HasIndex("ProductId");
 
@@ -71,17 +71,51 @@ namespace apn_promise_recruiting_task.Migrations
                     b.HasKey("ProductId");
 
                     b.ToTable("Products");
-                });
 
-            modelBuilder.Entity("apn_promise_recruiting_task.Model.Order", b =>
-                {
-                    b.HasOne("apn_promise_recruiting_task.Model.Order", null)
-                        .WithMany("Orders")
-                        .HasForeignKey("OrderId1");
+                    b.HasData(
+                        new
+                        {
+                            ProductId = 1,
+                            Currency = "PLN",
+                            Name = "Laptop",
+                            Price = 2500
+                        },
+                        new
+                        {
+                            ProductId = 2,
+                            Currency = "PLN",
+                            Name = "Klawiatura",
+                            Price = 120
+                        },
+                        new
+                        {
+                            ProductId = 3,
+                            Currency = "PLN",
+                            Name = "Mysz",
+                            Price = 90
+                        },
+                        new
+                        {
+                            ProductId = 4,
+                            Currency = "PLN",
+                            Name = "Monitor",
+                            Price = 1000
+                        },
+                        new
+                        {
+                            ProductId = 5,
+                            Currency = "PLN",
+                            Name = "Kaczka debuggująca",
+                            Price = 66
+                        });
                 });
 
             modelBuilder.Entity("apn_promise_recruiting_task.Model.OrderITem", b =>
                 {
+                    b.HasOne("apn_promise_recruiting_task.Model.Order", null)
+                        .WithMany("Orders")
+                        .HasForeignKey("OrderId");
+
                     b.HasOne("apn_promise_recruiting_task.Model.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
