@@ -31,5 +31,42 @@ namespace apn_promise_recruiting_task.Controller
         {
             _service.RemoveItemFromOrder(orderITemId, orderId);
         }
+
+        public double GetOrderValue(int orderId)
+        {
+            var orderITems = GetAllOrderITemsFromOrder(orderId);
+            var prices = orderITems.Select(o => o.Product.Price).ToList();
+
+            double discount = 0;
+            double sum = prices.Sum();
+            prices.Sort();
+            prices.Reverse();
+            for (int i = 0; i < prices.Count; i += 2)
+            {
+                if (i + 2 < prices.Count)
+                {
+                    if (prices[i + 2] * 0.2 >= prices[i + 1] * 0.1)
+                    {
+                        discount += prices[i + 2] * 0.2;
+                        i += 1;
+                    }
+                    else
+                    {
+                        discount += prices[i + 1] * 0.1;
+                    }
+                }
+                else if (i + 1 < prices.Count)
+                {
+                    discount += prices[i + 1] * 0.1;
+                }
+
+            }
+            if (sum > 5000)
+            {
+                discount += (sum - discount) * 0.05;
+            }
+
+            return sum - discount;
+        }
     }
 }

@@ -51,27 +51,27 @@ namespace apn_promise_recruiting_task.View
                         catch (Exception e)
                         {
                             Console.WriteLine(e.Message);
-                            Console.WriteLine("Naciśnij dowolny przycisk aby kontynuować");
-                            Console.ReadLine();
                         }
                     }
                     else
                     {
                         Console.WriteLine("Wpisz numer");
                     }
+                    Console.WriteLine("Naciśnij dowolny przycisk aby kontynuować");
+                    Console.ReadLine();
                     break;
 
                 case "2":
                     Console.WriteLine("Wpisz numer zamówienia z którego chcesz odjąć produkt");
                     orderNumber = Console.ReadLine();
-                    Console.WriteLine("Produkty w zamówieniu:");
                     if (orderNumber != null)
                     {
                         try
                         {
                             var orderITems = _controller.GetAllOrderITemsFromOrder(Convert.ToInt32(orderNumber));
-                            if (orderITems != null)
+                            if (orderITems != null && orderITems.Count > 0)
                             {
+                                Console.WriteLine("Produkty w zamówieniu:");
                                 foreach (var orderITem in orderITems)
                                 {
                                     Console.WriteLine($"{orderITem.OrderITemId}. {orderITem.Product.Name}: {orderITem.Product.Price} {orderITem.Product.Currency}");
@@ -103,7 +103,34 @@ namespace apn_promise_recruiting_task.View
                     break;
 
                 case "3":
-                    // Display order value
+                    Console.WriteLine("Wpisz numer zamówienia, dla którego chcesz wyświetlić wartość");
+                    orderNumber = Console.ReadLine();
+                    if (orderNumber != null)
+                    {
+                        try
+                        {
+                            var orderITems = _controller.GetAllOrderITemsFromOrder(Convert.ToInt32(orderNumber));
+                            if (orderITems != null && orderITems.Count > 0)
+                            {
+                                Console.WriteLine("Produkty w zamówieniu:");
+                                foreach (var orderITem in orderITems)
+                                {
+                                    Console.WriteLine($"{orderITem.OrderITemId}. {orderITem.Product.Name}: {orderITem.Product.Price} {orderITem.Product.Currency}");
+                                }
+                                Console.WriteLine($"Wartość zamówienia to: {Math.Round(_controller.GetOrderValue(Convert.ToInt32(orderNumber)), 2)} {orderITems.FirstOrDefault().Product.Currency}");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Zamówienie jest puste");
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                        }
+                    }
+                    Console.WriteLine("Naciśnij dowolny przycisk aby kontynuować");
+                    Console.ReadLine();
                     break;
 
                 case "4":
@@ -112,6 +139,8 @@ namespace apn_promise_recruiting_task.View
 
                 default:
                     Console.WriteLine("Wybierz numer od 1 do 4:");
+                    Console.WriteLine("Naciśnij dowolny przycisk aby kontynuować");
+                    Console.ReadLine();
                     break;
             }
         }
