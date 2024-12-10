@@ -11,7 +11,7 @@ class Program
     {
         var serviceProvider = new ServiceCollection()
             .AddDbContext<ApplicationDbContext>()
-            .AddTransient<ProductService>()
+            .AddTransient<Service>()
             .AddTransient<Controller>()
             .AddTransient<View>()
             .BuildServiceProvider();
@@ -21,5 +21,10 @@ class Program
 
         var view = serviceProvider.GetService<View>();
         view.DisplayProducts();
+        view.DisplayOperations();
+        while (true)
+        {
+            view.ProcessOperations();
+        }
     }
 }
