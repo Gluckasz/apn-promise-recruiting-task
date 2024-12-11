@@ -20,12 +20,21 @@ class Program
         context.Database.Migrate();
 
         var view = serviceProvider.GetService<View>();
+        int userId = -1;
         while (true)
         {
-            view.DisplayProducts();
-            view.DisplayOperations();
-            view.ProcessOperations();
-            Console.Clear();
+            while (userId == -1)
+            {
+                userId = view.LoginOrRegistration();
+                Console.Clear();
+            }
+            while (userId != -1)
+            {
+                view.DisplayProducts();
+                view.DisplayOperations();
+                view.ProcessOperations(ref userId);
+                Console.Clear();
+            }
         }
     }
 }

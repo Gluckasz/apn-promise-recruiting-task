@@ -11,6 +11,83 @@ namespace apn_promise_recruiting_task.View
             _controller = controller;
         }
 
+        public int LoginOrRegistration()
+        {
+            Console.WriteLine("Dostępne są 2 operacje:");
+            Console.WriteLine("1. Zarejestruj się");
+            Console.WriteLine("2. Zaloguj się");
+            Console.WriteLine("Wybierz jedną z tych operacji wpisując numer od 1 do 2");
+            Console.WriteLine();
+            string? operation = Console.ReadLine();
+            if (operation == "1")
+            {
+                Registration();
+            }
+            else if (operation == "2")
+            {
+                return Login();
+            }
+            else
+            {
+                Console.WriteLine("Wpisz numer od 1 do 2");
+            }
+            return -1;
+        }
+
+        public void Registration()
+        {
+            Console.WriteLine("Podaj nazwę użytkownika");
+            string? username = Console.ReadLine();
+            Console.WriteLine("Podaj hasło");
+            string? password = Console.ReadLine();
+            if (username != null && password != null && username.Length != 0 && password.Length != 0)
+            {
+                try
+                {
+                    _controller.RegisterUser(username, password);
+                    Console.WriteLine("Zarejestrowano pomyślnie");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Nie wpisano hasła lub nazwy użytkownika");
+            }
+            Console.WriteLine("Naciśnij dowolny przycisk aby kontynuować");
+            Console.ReadLine();
+        }
+
+        public int Login()
+        {
+            Console.WriteLine("Podaj nazwę użytkownika");
+            string? username = Console.ReadLine();
+            Console.WriteLine("Podaj hasło");
+            string? password = Console.ReadLine();
+            int userId = -1;
+            if (username != null && password != null && username.Length != 0 && password.Length != 0)
+            {
+                try
+                {
+                    userId = _controller.LoginUser(username, password);
+                    Console.WriteLine("Zalogowano pomyślnie");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Nie wpisano hasła lub nazwy użytkownika");
+            }
+            Console.WriteLine("Naciśnij dowolny przycisk aby kontynuować");
+            Console.ReadLine();
+            return userId;
+        }
+
         public void DisplayProducts()
         {
             var products = _controller.GetProducts();
@@ -27,12 +104,13 @@ namespace apn_promise_recruiting_task.View
             Console.WriteLine("1. Dodanie produktu");
             Console.WriteLine("2. Usunięcie produktu");
             Console.WriteLine("3. Wyświetlenie wartości zamówienia");
-            Console.WriteLine("4. Wyjście");
-            Console.WriteLine("Wybierz jedną z tych operacji wpisując numer od 1 do 4.");
+            Console.WriteLine("4. Wyloguj się");
+            Console.WriteLine("5. Wyjście");
+            Console.WriteLine("Wybierz jedną z tych operacji wpisując numer od 1 do 5.");
             Console.WriteLine();
         }
 
-        public void ProcessOperations()
+        public void ProcessOperations(ref int userId)
         {
             string? operation = Console.ReadLine();
             switch (operation)
@@ -42,11 +120,11 @@ namespace apn_promise_recruiting_task.View
                     string? productNumber = Console.ReadLine();
                     Console.WriteLine("Wpisz numer zamówienia do którego chcesz dodać produkt");
                     string? orderNumber = Console.ReadLine();
-                    if (productNumber != null && orderNumber != null)
+                    if (productNumber != null && orderNumber != null && productNumber.Length != 0 && orderNumber.Length != 0)
                     {
                         try
                         {
-                            _controller.AddProductToOrder(Convert.ToInt32(productNumber), Convert.ToInt32(orderNumber));
+                            _controller.AddProductToOrder(Convert.ToInt32(productNumber), Convert.ToInt32(orderNumber), userId);
                         }
                         catch (Exception e)
                         {
@@ -64,11 +142,11 @@ namespace apn_promise_recruiting_task.View
                 case "2":
                     Console.WriteLine("Wpisz numer zamówienia z którego chcesz odjąć produkt");
                     orderNumber = Console.ReadLine();
-                    if (orderNumber != null)
+                    if (orderNumber != null && orderNumber.Length != 0)
                     {
                         try
                         {
-                            var orderITems = _controller.GetAllOrderITemsFromOrder(Convert.ToInt32(orderNumber));
+                            var orderITems = _controller.GetAllOrderITemsFromOrder(Convert.ToInt32(orderNumber), userId);
                             if (orderITems != null && orderITems.Count > 0)
                             {
                                 Console.WriteLine("Produkty w zamówieniu:");
@@ -78,9 +156,9 @@ namespace apn_promise_recruiting_task.View
                                 }
                                 Console.WriteLine("Wpisz numer produktu który chcesz usunąć");
                                 string? orderITemNumber = Console.ReadLine();
-                                if (orderITemNumber != null)
+                                if (orderITemNumber != null && orderITemNumber.Length != 0)
                                 {
-                                    _controller.RemoveItemFromOrder(Convert.ToInt32(orderITemNumber), Convert.ToInt32(orderNumber));
+                                    _controller.RemoveItemFromOrder(Convert.ToInt32(orderITemNumber), Convert.ToInt32(orderNumber), userId);
                                 }
                                 else
                                 {
@@ -105,11 +183,11 @@ namespace apn_promise_recruiting_task.View
                 case "3":
                     Console.WriteLine("Wpisz numer zamówienia, dla którego chcesz wyświetlić wartość");
                     orderNumber = Console.ReadLine();
-                    if (orderNumber != null)
+                    if (orderNumber != null && orderNumber.Length != 0)
                     {
                         try
                         {
-                            var orderITems = _controller.GetAllOrderITemsFromOrder(Convert.ToInt32(orderNumber));
+                            var orderITems = _controller.GetAllOrderITemsFromOrder(Convert.ToInt32(orderNumber), userId);
                             if (orderITems != null && orderITems.Count > 0)
                             {
                                 Console.WriteLine("Produkty w zamówieniu:");
@@ -117,7 +195,7 @@ namespace apn_promise_recruiting_task.View
                                 {
                                     Console.WriteLine($"{orderITem.OrderITemId}. {orderITem.Product.Name}: {orderITem.Product.Price} {orderITem.Product.Currency}");
                                 }
-                                Console.WriteLine($"Wartość zamówienia to: {Math.Round(_controller.GetOrderValue(Convert.ToInt32(orderNumber)), 2)} {orderITems.FirstOrDefault().Product.Currency}");
+                                Console.WriteLine($"Wartość zamówienia to: {Math.Round(_controller.GetOrderValue(Convert.ToInt32(orderNumber), userId), 2)} {orderITems.FirstOrDefault().Product.Currency}");
                             }
                             else
                             {
@@ -134,6 +212,13 @@ namespace apn_promise_recruiting_task.View
                     break;
 
                 case "4":
+                    userId = -1;
+                    Console.WriteLine("Wylogowano");
+                    Console.WriteLine("Naciśnij dowolny przycisk aby kontynuować");
+                    Console.ReadLine();
+                    break;
+
+                case "5":
                     Environment.Exit(0);
                     break;
 

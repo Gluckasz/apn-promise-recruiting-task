@@ -7,6 +7,7 @@ namespace apn_promise_recruiting_task.Model
         public DbSet<Product> Products { get; set; }
         public DbSet<OrderITem> OrderITems { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<User> Users { get; set; }
 
         public string DbPath { get; }
 
@@ -55,5 +56,15 @@ namespace apn_promise_recruiting_task.Model
     {
         public int OrderId { get; set; }
         public List<OrderITem>? OrderITems { get; set; }
+        public int UserId { get; set; }
+        public required User User { get; set; }
+    }
+
+    public class User
+    {
+        public int UserId { get; set; }
+        public required string Username { get; set; }
+        public required string Password { get; set; }
+        public List<Order>? Orders { get; set; }
     }
 }

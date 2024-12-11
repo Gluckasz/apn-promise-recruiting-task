@@ -17,24 +17,24 @@ namespace apn_promise_recruiting_task.Controller
             return _service.GetAllProducts();
         }
 
-        public List<OrderITem> GetAllOrderITemsFromOrder(int orderId)
+        public List<OrderITem> GetAllOrderITemsFromOrder(int orderId, int userId)
         {
-            return _service.GetAllOrderITemsFromOrder(orderId);
+            return _service.GetAllOrderITemsFromOrder(orderId, userId);
         }
 
-        public void AddProductToOrder(int productId, int orderId)
+        public void AddProductToOrder(int productId, int orderId, int userId)
         {
-            _service.AddProductToOrder(productId, orderId);
+            _service.AddProductToOrder(productId, orderId, userId);
         }
 
-        public void RemoveItemFromOrder(int orderITemId, int orderId)
+        public void RemoveItemFromOrder(int orderITemId, int orderId, int userId)
         {
-            _service.RemoveItemFromOrder(orderITemId, orderId);
+            _service.RemoveItemFromOrder(orderITemId, orderId, userId);
         }
 
-        public double GetOrderValue(int orderId)
+        public double GetOrderValue(int orderId, int userId)
         {
-            var orderITems = GetAllOrderITemsFromOrder(orderId);
+            var orderITems = GetAllOrderITemsFromOrder(orderId, userId);
             var prices = orderITems.Select(o => o.Product.Price).ToList();
 
             double discount = 0;
@@ -67,6 +67,16 @@ namespace apn_promise_recruiting_task.Controller
             }
 
             return sum - discount;
+        }
+
+        public void RegisterUser(string username, string password)
+        {
+            _service.RegisterUser(username, password);
+        }
+
+        public int LoginUser(string username, string password)
+        {
+            return _service.LoginUser(username, password);
         }
     }
 }

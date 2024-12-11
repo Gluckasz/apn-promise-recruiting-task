@@ -10,7 +10,7 @@ using apn_promise_recruiting_task.Model;
 namespace apn_promise_recruiting_task.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241210204636_InitialCreate")]
+    [Migration("20241211175212_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -25,7 +25,12 @@ namespace apn_promise_recruiting_task.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("OrderId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
@@ -110,6 +115,36 @@ namespace apn_promise_recruiting_task.Migrations
                         });
                 });
 
+            modelBuilder.Entity("apn_promise_recruiting_task.Model.User", b =>
+                {
+                    b.Property<int>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("apn_promise_recruiting_task.Model.Order", b =>
+                {
+                    b.HasOne("apn_promise_recruiting_task.Model.User", "User")
+                        .WithMany("Orders")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("apn_promise_recruiting_task.Model.OrderITem", b =>
                 {
                     b.HasOne("apn_promise_recruiting_task.Model.Order", "Order")
@@ -132,6 +167,11 @@ namespace apn_promise_recruiting_task.Migrations
             modelBuilder.Entity("apn_promise_recruiting_task.Model.Order", b =>
                 {
                     b.Navigation("OrderITems");
+                });
+
+            modelBuilder.Entity("apn_promise_recruiting_task.Model.User", b =>
+                {
+                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }
