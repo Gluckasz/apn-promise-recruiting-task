@@ -18,8 +18,15 @@ namespace apn_promise_recruiting_task.Model
             DbPath = System.IO.Path.Join(path, "orders.db");
         }
 
+        public ApplicationDbContext(DbContextOptions options) : base(options) { }
+
         protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseSqlite($"Data Source={DbPath}");
+        {
+            if (!options.IsConfigured)
+            {
+                options.UseSqlite($"Data Source={DbPath}");
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

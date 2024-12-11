@@ -77,16 +77,18 @@ namespace apn_promise_recruiting_task.Service
 
         public void RemoveItemFromOrder(int orderITemId, int orderId, int userId)
         {
-            var orderITem = _context.OrderITems.Find(orderITemId);
-            if (orderITem == null)
-            {
-                throw new Exception($"Element zamówienia z id: {orderITem} nie istnieje");
-            }
             var order = _context.Orders.Include(o => o.OrderITems).FirstOrDefault(o => o.OrderId == orderId);
             if (order == null)
             {
                 throw new Exception($"Zamówienie z id: {orderId} nie istnieje");
             }
+
+            var orderITem = _context.OrderITems.Find(orderITemId);
+            if (orderITem == null)
+            {
+                throw new Exception($"Element zamówienia z id: {orderITem} nie istnieje");
+            }
+
             if (order.UserId != userId)
             {
                 throw new Exception($"Zamówienie z id: {orderId} nie należy do użytkownika z id: {userId}");
