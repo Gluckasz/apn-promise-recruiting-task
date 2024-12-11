@@ -13,12 +13,20 @@ namespace apn_promise_recruiting_task.Model
 
         public ApplicationDbContext()
         {
-            var folder = Environment.SpecialFolder.LocalApplicationData;
-            var path = Environment.GetFolderPath(folder);
-            DbPath = System.IO.Path.Join(path, "orders.db");
+            DbPath = GetDbPath();
         }
 
-        public ApplicationDbContext(DbContextOptions options) : base(options) { }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        {
+            DbPath = GetDbPath();
+        }
+
+        private string GetDbPath()
+        {
+            var folder = Environment.SpecialFolder.LocalApplicationData;
+            var path = Environment.GetFolderPath(folder);
+            return Path.Join(path, "orders.db");
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {

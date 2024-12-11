@@ -10,7 +10,7 @@ using apn_promise_recruiting_task.Model;
 namespace apn_promise_recruiting_task.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241211185557_InitialCreate")]
+    [Migration("20241211211052_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
