@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace apn_promise_recruiting_task.Service
 {
-    public class Service
+    public class Service : IService
     {
         private readonly ApplicationDbContext _context;
 

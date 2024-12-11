@@ -1,13 +1,14 @@
 ﻿using apn_promise_recruiting_task.Model;
+using apn_promise_recruiting_task.Service;
 using Microsoft.EntityFrameworkCore;
 
 namespace apn_promise_recruiting_task.Controller
 {
-    internal class Controller
+    public class Controller
     {
-        private readonly Service.Service _service;
+        private readonly IService _service;
 
-        public Controller(Service.Service service)
+        public Controller(IService service)
         {
             _service = service;
         }
