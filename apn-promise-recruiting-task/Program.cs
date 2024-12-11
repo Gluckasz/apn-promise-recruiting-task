@@ -11,7 +11,7 @@ class Program
     {
         var serviceProvider = new ServiceCollection()
             .AddDbContext<ApplicationDbContext>()
-            .AddTransient<Service>()
+            .AddTransient<IService, Service>()
             .AddTransient<Controller>()
             .AddTransient<View>()
             .BuildServiceProvider();
