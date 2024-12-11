@@ -183,5 +183,11 @@ namespace OrderTests
         {
             Assert.Throws<Exception>(() => _service.LoginUser("nonexistinguser", "nonexistingpassword"));
         }
+
+        [Fact]
+        public void LoginUser_WrongPassword_ShouldThrowException()
+        {
+            Assert.Throws<Exception>(() => _service.LoginUser("testuser", "nonexistingpassword"));
+        }
     }
 }

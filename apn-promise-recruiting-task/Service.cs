@@ -119,7 +119,10 @@ namespace apn_promise_recruiting_task.Service
                 throw new Exception($"Użytkownik o nazwie: {username} nie istnieje");
             }
 
-            return user.UserId;
+            if (password == user.Password)
+                return user.UserId;
+            else
+                throw new Exception($"Złe hasło dla użytkownika: {username}");
         }
     }
 }
