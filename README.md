@@ -11,4 +11,6 @@
 5. Showing the value of an order
 6. Logout
 7. Exit the app
-8. I added tests too
+8. Database for data saving
+9. I added tests too
+
